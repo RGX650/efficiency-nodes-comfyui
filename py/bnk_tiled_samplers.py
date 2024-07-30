@@ -11,7 +11,7 @@ import comfy.sd
 import comfy.controlnet
 import comfy.model_management
 import comfy.sample
-import comfy.sample_helpers
+import comfy.sampler_helpers
 from . import bnk_tiling as tiling
 import latent_preview
 #import torch
@@ -112,7 +112,7 @@ def sample_common(model, add_noise, noise_seed, tile_width, tile_height, tiling_
         noise = comfy.sample.prepare_noise(samples, noise_seed, skip)
 
     if noise_mask is not None:
-        noise_mask = comfy.sample_helpers.prepare_mask(noise_mask, noise.shape, device='cpu')
+        noise_mask = comfy.sampler_helpers.prepare_mask(noise_mask, noise.shape, device='cpu')
 
     shape = samples.shape
     samples = samples.clone()
@@ -170,12 +170,12 @@ def sample_common(model, add_noise, noise_seed, tile_width, tile_height, tiling_
     #cond area and mask
     spatial_conds_pos = [
         (c[1]['area'] if 'area' in c[1] else None, 
-            comfy.sample_helpers.prepare_mask(c[1]['mask'], shape, device) if 'mask' in c[1] else None)
+            comfy.sampler_helpers.prepare_mask(c[1]['mask'], shape, device) if 'mask' in c[1] else None)
         for c in positive
     ]
     spatial_conds_neg = [
         (c[1]['area'] if 'area' in c[1] else None, 
-            comfy.sample_helpers.prepare_mask(c[1]['mask'], shape, device) if 'mask' in c[1] else None)
+            comfy.sampler_helpers.prepare_mask(c[1]['mask'], shape, device) if 'mask' in c[1] else None)
         for c in negative
     ]
 
